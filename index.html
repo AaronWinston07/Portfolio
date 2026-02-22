@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aaron Winston — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=Manrope:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:       #06030f;
+  --bg2:      #09051a;
+  --bg3:      #0d0820;
+  --card:     #100c22;
+  --violet:   #9b5cf6;
+  --magenta:  #e040fb;
+  --pink:     #f472b6;
+  --cyan:     #22d3ee;
+  --lime:     #a3e635;
+  --text:     #ede9fe;
+  --muted:    #6d5d8a;
+  --border:   rgba(155,92,246,0.18);
+  --gv: 0 0 60px rgba(155,92,246,0.3);
+  --gm: 0 0 60px rgba(224,64,251,0.3);
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;overflow-x:hidden;cursor:none}
+
+/* ── CURSOR: MAGNETIC COMET ──────────────── */
+#c-dot{
+  position:fixed;z-index:10000;pointer-events:none;
+  width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,var(--magenta) 60%,transparent 100%);
+  box-shadow:0 0 10px 3px var(--magenta),0 0 24px 6px rgba(224,64,251,0.5);
+  transform:translate(-50%,-50%);top:0;left:0;
+  transition:width .2s,height .2s;
+  mix-blend-mode:screen;
+}
+#c-dot.big{width:20px;height:20px;box-shadow:0 0 18px 5px var(--violet),0 0 40px 12px rgba(155,92,246,0.5)}
+#c-ring{
+  position:fixed;z-index:9998;pointer-events:none;top:0;left:0;
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid rgba(155,92,246,0.6);
+  transform:translate(-50%,-50%);
+  transition:width .4s cubic-bezier(.23,1,.32,1),height .4s cubic-bezier(.23,1,.32,1),border-color .3s;
+  mix-blend-mode:screen;
+}
+#c-ring.big{width:64px;height:64px;border-color:rgba(224,64,251,0.8)}
+.comet-trail{
+  position:fixed;pointer-events:none;z-index:9997;
+  border-radius:50%;mix-blend-mode:screen;
+  animation:cometFade var(--d,.5s) ease-out forwards;
+}
+@keyframes cometFade{0%{opacity:.8;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(0)}}
+
+/* ── AURORA BG ───────────────────────────── */
+.aurora{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.aurora-band{
+  position:absolute;border-radius:50%;filter:blur(80px);opacity:0.12;
+  animation:auroraDrift linear infinite;
+}
+.a1{width:80vw;height:50vh;background:radial-gradient(ellipse,var(--violet),transparent 70%);top:-10vh;left:-20vw;animation-duration:20s}
+.a2{width:60vw;height:40vh;background:radial-gradient(ellipse,var(--magenta),transparent 70%);top:30vh;right:-15vw;animation-duration:25s;animation-delay:-8s}
+.a3{width:70vw;height:45vh;background:radial-gradient(ellipse,var(--cyan) 0%,transparent 70%);bottom:-10vh;left:20vw;animation-duration:18s;animation-delay:-5s;opacity:0.06}
+@keyframes auroraDrift{
+  0%{transform:translateY(0) scaleX(1)}
+  33%{transform:translateY(4vh) scaleX(1.05)}
+  66%{transform:translateY(-3vh) scaleX(0.97)}
+  100%{transform:translateY(0) scaleX(1)}
+}
+
+/* SCANLINE TEXTURE */
+body::after{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+  opacity:.4;
+}
+
+/* ── NAV ─────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 64px;
+  background:rgba(6,3,15,0.7);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  animation:navIn .8s cubic-bezier(.23,1,.32,1) both;
+}
+@keyframes navIn{from{transform:translateY(-100%);opacity:0}to{transform:translateY(0);opacity:1}}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;
+  background:linear-gradient(135deg,var(--violet),var(--magenta));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-decoration:none;
+}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;font-weight:600;
+  transition:color .3s;position:relative;padding-bottom:4px;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:1px;
+  background:linear-gradient(90deg,var(--violet),var(--magenta));
+  transition:width .35s ease;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-links a:hover::after{width:100%}
+
+/* ── SECTIONS ────────────────────────────── */
+section{position:relative;z-index:2}
+.wrap{padding:110px 64px}
+.eyebrow{
+  font-family:'Space Grotesk',sans-serif;font-size:10px;
+  letter-spacing:4px;text-transform:uppercase;color:var(--violet);
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;
+}
+.eyebrow::before{content:'';width:28px;height:1px;background:linear-gradient(90deg,var(--violet),transparent)}
+.eyebrow::after {content:'';width:16px;height:1px;background:linear-gradient(90deg,var(--magenta),transparent)}
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(44px,7vw,88px);letter-spacing:2px;line-height:.95;
+  background:linear-gradient(135deg,var(--text) 0%,var(--violet) 40%,var(--magenta) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ── HERO ────────────────────────────────── */
+#home{min-height:100vh;display:flex;align-items:center;padding:120px 64px 80px;overflow:hidden}
+.h-glitch-bg{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(130px,17vw,240px);
+  letter-spacing:-5px;color:transparent;user-select:none;pointer-events:none;
+  -webkit-text-stroke:1px rgba(155,92,246,0.1);
+  animation:glitchBg 8s ease-in-out infinite;
+}
+@keyframes glitchBg{
+  0%,90%,100%{opacity:.6;transform:translateY(-50%) skewX(0)}
+  92%{opacity:.8;transform:translateY(-50%) skewX(-1deg) translateX(4px)}
+  94%{opacity:.5;transform:translateY(-50%) skewX(1deg) translateX(-4px)}
+  96%{opacity:.8;transform:translateY(-50%) skewX(0)}
+}
+.h-inner{position:relative;z-index:2;max-width:920px}
+.h-tag{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--cyan);font-weight:600;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+  animation:fup .7s .2s ease both;
+}
+.h-tag::before{content:'';width:36px;height:1px;background:var(--cyan)}
+.h-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(70px,11vw,140px);letter-spacing:2px;line-height:.9;
+  animation:fup .8s .4s ease both;
+}
+.h-name .n1{
+  display:block;
+  background:linear-gradient(135deg,var(--text),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.h-name .n2{
+  display:block;color:transparent;
+  -webkit-text-stroke:2px var(--magenta);
+  animation:strokeCycle 5s ease-in-out infinite;
+}
+@keyframes strokeCycle{
+  0%,100%{-webkit-text-stroke-color:var(--magenta)}
+  50%{-webkit-text-stroke-color:var(--violet)}
+}
+.h-role{
+  margin-top:20px;font-size:15px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);display:flex;align-items:center;gap:12px;font-weight:500;
+  animation:fup .7s .6s ease both;
+}
+.h-line{width:44px;height:1px;background:linear-gradient(90deg,var(--magenta),transparent)}
+.h-sub{
+  margin-top:24px;max-width:500px;font-size:15px;
+  color:rgba(237,233,254,.45);line-height:1.8;font-weight:300;
+  animation:fup .7s .8s ease both;
+}
+.h-cta{margin-top:48px;display:flex;gap:16px;flex-wrap:wrap;animation:fup .7s 1s ease both}
+
+/* BUTTONS */
+.btn{
+  padding:14px 32px;font-family:'Space Grotesk',sans-serif;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;
+  text-decoration:none;border-radius:2px;cursor:none;
+  transition:all .3s;position:relative;overflow:hidden;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.btn::before{
+  content:'';position:absolute;inset:0;
+  background:rgba(255,255,255,0.06);
+  transform:translateX(-101%) skewX(-10deg);
+  transition:transform .4s ease;
+}
+.btn:hover::before{transform:translateX(101%) skewX(-10deg)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--violet),var(--magenta));
+  color:#06030f;box-shadow:0 4px 24px rgba(155,92,246,0.4),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(224,64,251,0.5),0 0 0 1px var(--magenta)}
+.btn-ghost{border:1px solid var(--border);color:var(--text);background:transparent}
+.btn-ghost:hover{border-color:var(--violet);color:var(--violet);background:rgba(155,92,246,0.06);transform:translateY(-3px)}
+.btn-cyan{border:1px solid rgba(34,211,238,0.3);color:var(--cyan);background:transparent}
+.btn-cyan:hover{border-color:var(--cyan);background:rgba(34,211,238,0.07);box-shadow:0 0 28px rgba(34,211,238,0.2);transform:translateY(-3px)}
+
+@keyframes fup{from{opacity:0;transform:translateY(44px)}to{opacity:1;transform:translateY(0)}}
+
+.h-scroll{
+  position:absolute;bottom:38px;left:64px;
+  display:flex;align-items:center;gap:10px;
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+  animation:fup .7s 1.3s ease both;
+}
+.scroll-bar{width:1px;height:56px;background:linear-gradient(to bottom,var(--violet),transparent);animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{
+  0%{transform:scaleY(0);transform-origin:top;opacity:0}
+  50%{transform:scaleY(1);transform-origin:top;opacity:1}
+  100%{transform:scaleY(0);transform-origin:bottom;opacity:0}
+}
+
+/* ── ABOUT ───────────────────────────────── */
+#about{background:var(--bg2)}
+.ag{display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:start}
+.about-p{font-size:17px;line-height:1.85;color:rgba(237,233,254,.55);margin-bottom:20px;font-weight:300}
+.facts{margin-top:36px}
+.fact{display:grid;grid-template-columns:120px 1fr;padding:13px 0;border-bottom:1px solid rgba(155,92,246,0.08)}
+.fk{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--violet);font-weight:700}
+.fv{font-size:13px;color:rgba(237,233,254,.55);font-weight:300}
+.aside{display:flex;flex-direction:column;gap:18px}
+.stat-b{
+  background:var(--card);border:1px solid var(--border);
+  padding:32px;border-radius:3px;position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+}
+.stat-b::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--violet),var(--magenta),var(--cyan))}
+.stat-b:hover{transform:translateY(-4px);box-shadow:var(--gv)}
+.stat-n{
+  font-family:'Bebas Neue',sans-serif;font-size:60px;line-height:1;
+  background:linear-gradient(135deg,var(--violet),var(--magenta));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.stat-l{font-size:11px;color:var(--muted);letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}
+.edu-b{background:var(--card);border:1px solid var(--border);padding:28px;border-radius:3px}
+.edu-i{padding:14px 0;border-bottom:1px solid rgba(155,92,246,0.08)}
+.edu-i:last-child{border-bottom:none;padding-bottom:0}
+.edu-d{font-size:14px;font-weight:600;color:var(--text)}
+.edu-m{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.5px}
+
+/* ── SKILLS ──────────────────────────────── */
+.sk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:44px}
+.sk-card{
+  background:var(--card);border:1px solid var(--border);
+  padding:28px;border-radius:3px;transition:all .35s;position:relative;overflow:hidden;
+}
+.sk-card::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(155,92,246,0.08) 0%,transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.sk-card:hover{border-color:rgba(155,92,246,0.5);transform:translateY(-5px);box-shadow:var(--gv)}
+.sk-card:hover::after{opacity:1}
+.sk-icon{font-size:28px;margin-bottom:14px;display:block}
+.sk-cat{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:12px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{
+  padding:4px 12px;background:rgba(155,92,246,0.1);
+  border:1px solid rgba(155,92,246,0.25);border-radius:2px;
+  font-size:11px;color:var(--violet);letter-spacing:.5px;font-weight:600;
+  transition:all .25s;
+}
+.tag:hover{background:rgba(155,92,246,0.2);border-color:var(--violet)}
+.soft-row{display:flex;flex-wrap:wrap;gap:12px}
+.soft-p{
+  padding:9px 22px;border:1px solid rgba(244,114,182,0.2);
+  border-radius:50px;font-size:13px;color:rgba(237,233,254,.55);
+  transition:all .3s;
+}
+.soft-p:hover{border-color:var(--pink);color:var(--pink);background:rgba(244,114,182,0.07);transform:scale(1.04)}
+
+/* ── WORK ────────────────────────────────── */
+#work{background:var(--bg2)}
+.proj-card{
+  border:1px solid var(--border);background:var(--card);
+  border-radius:3px;overflow:hidden;position:relative;transition:all .4s;
+}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 30px 80px rgba(0,0,0,.4),var(--gm)}
+.proj-bar{
+  height:4px;
+  background:linear-gradient(90deg,var(--violet),var(--magenta),var(--cyan),var(--pink));
+  background-size:300% auto;animation:barFlow 4s linear infinite;
+}
+@keyframes barFlow{0%{background-position:0%}100%{background-position:300%}}
+.proj-body{padding:48px}
+.proj-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--magenta);margin-bottom:14px;font-weight:700}
+.proj-name{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:18px;line-height:1.1}
+.proj-desc{color:rgba(237,233,254,.5);line-height:1.8;font-size:15px;max-width:680px;font-weight:300}
+.t-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+.tb{
+  padding:5px 14px;border:1px solid rgba(34,211,238,0.3);border-radius:2px;
+  font-size:11px;color:var(--cyan);background:rgba(34,211,238,0.07);letter-spacing:.5px;font-weight:600;
+}
+.intern-c{
+  margin-top:24px;border:1px solid var(--border);background:var(--card);
+  border-radius:3px;padding:36px;
+  display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start;
+  position:relative;overflow:hidden;transition:all .35s;
+}
+.intern-c::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--violet),var(--magenta))}
+.intern-c:hover{border-color:rgba(155,92,246,0.4);box-shadow:var(--gv);transform:translateX(4px)}
+.intern-r{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px}
+.intern-co{color:var(--violet);font-size:14px;margin-top:5px;font-weight:700}
+.intern-d{color:rgba(237,233,254,.45);margin-top:12px;line-height:1.7;font-size:14px;font-weight:300}
+.intern-dt{font-size:11px;color:var(--muted);letter-spacing:1px;padding:7px 14px;border:1px solid var(--border);border-radius:2px;white-space:nowrap}
+
+/* ── CERTS ───────────────────────────────── */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.cert-c{
+  background:var(--card);border:1px solid var(--border);border-radius:3px;
+  padding:30px;display:flex;gap:18px;align-items:flex-start;
+  transition:all .35s;position:relative;overflow:hidden;
+}
+.cert-c::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--magenta),transparent);
+  transform:scaleX(0);transition:transform .4s;
+}
+.cert-c:hover{border-color:rgba(224,64,251,0.4);transform:translateY(-4px);box-shadow:var(--gm)}
+.cert-c:hover::after{transform:scaleX(1)}
+.cert-ico{
+  width:48px;height:48px;flex-shrink:0;
+  background:rgba(224,64,251,0.1);border:1px solid rgba(224,64,251,0.2);
+  border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:22px;
+}
+.cert-n{font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px}
+.cert-i{font-size:11px;color:var(--magenta);letter-spacing:1px;text-transform:uppercase;font-weight:700}
+.cert-y{font-size:11px;color:var(--muted);margin-top:3px}
+
+/* ── CONTACT ─────────────────────────────── */
+#contact{background:var(--bg2)}
+.contact-lead{
+  font-size:18px;color:rgba(237,233,254,.45);line-height:1.8;
+  max-width:560px;margin-bottom:48px;font-weight:300;
+}
+.clinks{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:48px}
+.clink{
+  display:flex;align-items:center;gap:10px;padding:14px 24px;
+  border:1px solid var(--border);color:rgba(237,233,254,.5);
+  text-decoration:none;border-radius:2px;font-size:13px;
+  transition:all .3s;font-weight:400;
+}
+.clink:hover{border-color:var(--violet);color:var(--text);background:rgba(155,92,246,0.07);box-shadow:0 0 22px rgba(155,92,246,0.15);transform:translateY(-2px)}
+.clink .ci{font-size:17px}
+
+/* ── FOOTER ──────────────────────────────── */
+footer{
+  position:relative;z-index:2;
+  border-top:1px solid var(--border);background:var(--bg);
+  padding:32px 64px;display:flex;align-items:center;justify-content:space-between;
+}
+.f-logo{
+  font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;
+  background:linear-gradient(135deg,var(--violet),var(--magenta));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.f-copy{font-size:11px;color:var(--muted);letter-spacing:1px}
+.f-status{display:flex;align-items:center;gap:9px;font-size:11px;color:var(--muted);letter-spacing:1px}
+.f-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--violet);
+  box-shadow:0 0 8px var(--violet),0 0 16px rgba(155,92,246,0.4);
+  animation:dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse{
+  0%,100%{box-shadow:0 0 6px var(--violet),0 0 12px rgba(155,92,246,0.3)}
+  50%{box-shadow:0 0 14px var(--magenta),0 0 28px rgba(224,64,251,0.5);transform:scale(1.25)}
+}
+
+/* ── PARTICLE STARS ──────────────────────── */
+.star{
+  position:fixed;pointer-events:none;z-index:0;
+  border-radius:50%;background:white;opacity:0;
+  animation:twinkle linear infinite;
+}
+@keyframes twinkle{
+  0%,100%{opacity:0}
+  50%{opacity:var(--op,.5)}
+}
+
+/* ── REVEAL ──────────────────────────────── */
+.r{opacity:0;transform:translateY(38px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+.r.on{opacity:1;transform:translateY(0)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}
+.rl{opacity:0;transform:translateX(-48px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+.rl.on{opacity:1;transform:translateX(0)}
+.rr{opacity:0;transform:translateX(48px);transition:opacity .8s cubic-bezier(.23,1,.32,1),transform .8s cubic-bezier(.23,1,.32,1)}
+.rr.on{opacity:1;transform:translateX(0)}
+.rs{opacity:0;transform:scale(.88);transition:opacity .7s ease,transform .7s ease}
+.rs.on{opacity:1;transform:scale(1)}
+
+@media(max-width:768px){
+  nav{padding:16px 24px}.nav-links{display:none}
+  #home{padding:100px 24px 80px}.wrap{padding:80px 24px}
+  .ag{grid-template-columns:1fr;gap:40px}
+  footer{flex-direction:column;gap:14px;text-align:center;padding:24px}
+  .h-glitch-bg{display:none}
+  .intern-c{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="c-ring"></div>
+<div id="c-dot"></div>
+<div class="aurora"><div class="aurora-band a1"></div><div class="aurora-band a2"></div><div class="aurora-band a3"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">AW.</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="h-glitch-bg">WINSTON</div>
+  <div class="h-inner">
+    <div class="h-tag"><span></span> Computer Science Engineer</div>
+    <h1 class="h-name">
+      <span class="n1">Aaron</span>
+      <span class="n2">Winston</span>
+    </h1>
+    <p class="h-role"><span class="h-line"></span> Developer · Problem Solver · Rapid Learner</p>
+    <p class="h-sub">Final-year CSE student. I build smart systems, write clean code, and bring ideas to life with technology — ready to contribute from day one.</p>
+    <div class="h-cta">
+      <a href="#work" class="btn btn-primary">⚡ View My Work</a>
+      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+      <a href="AaronWinston_Resume.docx" download class="btn btn-cyan">↓ Resume</a>
+    </div>
+  </div>
+  <div class="h-scroll"><div class="scroll-bar"></div>Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow r">01 — About Me</div>
+    <h2 class="sec-title r rd1" style="margin-bottom:60px">Who I Am</h2>
+    <div class="ag">
+      <div class="rl">
+        <p class="about-p">I'm Aaron Winston, a final-year Bachelor of Engineering student specialising in Computer Science at Panimalar Engineering College, Chennai — maintaining a strong CGPA of 8.3/10.</p>
+        <p class="about-p">Driven by curiosity and a passion for intelligent systems, I bring together programming fundamentals, problem-solving instincts, and a relentless drive to learn and adapt in any environment.</p>
+        <div class="facts">
+          <div class="fact"><span class="fk">Location</span><span class="fv">Tiruchendur, Tamil Nadu</span></div>
+          <div class="fact"><span class="fk">Date of Birth</span><span class="fv">July 17, 2005</span></div>
+          <div class="fact"><span class="fk">Phone</span><span class="fv">+91 9488765256</span></div>
+          <div class="fact"><span class="fk">Email</span><span class="fv">aaronwinston17072005@gmail.com</span></div>
+          <div class="fact"><span class="fk">LinkedIn</span><span class="fv">aaron-winston-ab484b32b</span></div>
+        </div>
+      </div>
+      <div class="aside rr">
+        <div class="stat-b rs">
+          <div class="stat-n">8.3</div>
+          <div class="stat-l">Current CGPA / 10</div>
+        </div>
+        <div class="edu-b rs rd2">
+          <div class="edu-i"><div class="edu-d">B.E — Computer Science &amp; Engineering</div><div class="edu-m">Panimalar Engineering College · 2023–2027</div></div>
+          <div class="edu-i"><div class="edu-d">Class XII — State Board · 83%</div><div class="edu-m">Kanchi Sri Sankara Academy MHSS · 2023</div></div>
+          <div class="edu-i"><div class="edu-d">Class X — State Board · All Pass</div><div class="edu-m">Kanchi Sri Sankara Academy MHSS · 2021</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow r">02 — Technical Arsenal</div>
+    <h2 class="sec-title r rd1" style="margin-bottom:52px">What I Know</h2>
+    <div class="sk-grid">
+      <div class="sk-card r rd1"><span class="sk-icon">💻</span><div class="sk-cat">Programming</div><div class="tags"><span class="tag">Java</span><span class="tag">Python</span></div></div>
+      <div class="sk-card r rd2"><span class="sk-icon">🌐</span><div class="sk-cat">Web Technologies</div><div class="tags"><span class="tag">HTML</span></div></div>
+      <div class="sk-card r rd3"><span class="sk-icon">🗄️</span><div class="sk-cat">Databases</div><div class="tags"><span class="tag">MySQL</span></div></div>
+      <div class="sk-card r rd4"><span class="sk-icon">🛠️</span><div class="sk-cat">Tools &amp; Platforms</div><div class="tags"><span class="tag">VS Code</span><span class="tag">MS Excel</span></div></div>
+    </div>
+    <div class="r rd2">
+      <p style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px;font-weight:700;">— Soft Skills</p>
+      <div class="soft-row">
+        <div class="soft-p">Problem Solving</div>
+        <div class="soft-p">Leadership</div>
+        <div class="soft-p">Time Management</div>
+        <div class="soft-p">Rapid Learner</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow r">03 — Projects &amp; Experience</div>
+    <h2 class="sec-title r rd1" style="margin-bottom:44px">My Work</h2>
+    <div class="proj-card r">
+      <div class="proj-bar"></div>
+      <div class="proj-body">
+        <div class="proj-lbl">Featured Project</div>
+        <div class="proj-name">Smart Reminder with Machine Learning &amp; IoT</div>
+        <p class="proj-desc">A smart system that detects forgotten items and instantly alerts the user. It senses seat occupancy, scans for left-behind items, and triggers a buzzer or mobile alert — preventing loss or theft through seamless ML + IoT integration.</p>
+        <div class="t-row">
+          <span class="tb">Machine Learning</span>
+          <span class="tb">IoT</span>
+          <span class="tb">Python</span>
+          <span class="tb">Sensor Systems</span>
+          <span class="tb">Mobile Alerts</span>
+        </div>
+      </div>
+    </div>
+    <div class="intern-c r rd2">
+      <div>
+        <div class="intern-r">Cyber Security Intern</div>
+        <div class="intern-co">InternPE</div>
+        <p class="intern-d">Explored cyber security fundamentals, threat landscapes, and defensive strategies. Developed hands-on understanding of protecting digital systems from vulnerabilities and attacks.</p>
+      </div>
+      <div class="intern-dt">Jul 28 – Aug 24, 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certifications">
+  <div class="wrap">
+    <div class="eyebrow r">04 — Credentials</div>
+    <h2 class="sec-title r rd1" style="margin-bottom:44px">Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-c r rd1">
+        <div class="cert-ico">🛡️</div>
+        <div><div class="cert-n">Cyber Security Foundations for Absolute Beginners</div><div class="cert-i">Udemy</div><div class="cert-y">2026</div></div>
+      </div>
+      <div class="cert-c r rd2">
+        <div class="cert-ico">🐍</div>
+        <div><div class="cert-n">Python Intermediate</div><div class="cert-i">SoloLearn</div><div class="cert-y">2025</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <div class="eyebrow r">05 — Let's Connect</div>
+    <h2 class="sec-title r rd1" style="margin-bottom:36px">Get In Touch</h2>
+    <p class="contact-lead r rd2">Actively seeking entry-level roles where I can contribute immediately and grow fast. Have a role or project in mind? I'd love to hear from you.</p>
+    <div class="clinks r rd2">
+      <a href="mailto:aaronwinston17072005@gmail.com" class="clink"><span class="ci">📧</span> aaronwinston17072005@gmail.com</a>
+      <a href="tel:+919488765256" class="clink"><span class="ci">📱</span> +91 9488765256</a>
+      <a href="https://linkedin.com/in/aaron-winston-ab484b32b" target="_blank" class="clink"><span class="ci">💼</span> LinkedIn</a>
+    </div>
+    <div class="r rd3"><a href="AaronWinston_Resume.docx" download class="btn btn-primary">↓ &nbsp;Download Resume</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">AW.</div>
+  <div class="f-copy">© 2026 Aaron Winston. All rights reserved.</div>
+  <div class="f-status"><div class="f-dot"></div>Open to opportunities</div>
+</footer>
+
+<script>
+/* STAR FIELD */
+(function(){
+  for(let i=0;i<60;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    const sz=Math.random()*2+.5;
+    s.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*100}vh;width:${sz}px;height:${sz}px;--op:${Math.random()*.6+.1};animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*6}s;`;
+    document.body.appendChild(s);
+  }
+})();
+
+/* CURSOR */
+const dot=document.getElementById('c-dot');
+const ring=document.getElementById('c-ring');
+let mx=0,my=0,rx=0,ry=0,lastX=0,lastY=0,lastT=Date.now();
+const COLS=['#9b5cf6','#e040fb','#f472b6','#22d3ee','#a3e635','#c084fc'];
+
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  dot.style.left=mx+'px';dot.style.top=my+'px';
+  const now=Date.now();
+  const speed=Math.hypot(mx-lastX,my-lastY)/(now-lastT+1);
+  lastX=mx;lastY=my;lastT=now;
+  const n=Math.min(Math.floor(speed*.45),5);
+  for(let i=0;i<n;i++) spawnComet(mx+(Math.random()-.5)*8,my+(Math.random()-.5)*8,3+Math.random()*9,.35+Math.random()*.4);
+});
+
+function spawnComet(x,y,sz,dur){
+  const p=document.createElement('div');
+  p.className='comet-trail';
+  const c=COLS[Math.floor(Math.random()*COLS.length)];
+  p.style.cssText=`left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:radial-gradient(circle,${c} 0%,transparent 100%);box-shadow:0 0 ${sz*2}px ${c};--d:${dur}s;`;
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),dur*1000+50);
+}
+
+(function lag(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lag)})();
+
+document.querySelectorAll('a,button,.btn,.sk-card,.cert-c,.stat-b,.proj-card,.soft-p').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{dot.classList.add('big');ring.classList.add('big')});
+  el.addEventListener('mouseleave',()=>{dot.classList.remove('big');ring.classList.remove('big')});
+});
+
+/* CLICK BURST */
+document.addEventListener('click',e=>{
+  for(let i=0;i<16;i++){
+    const angle=Math.random()*Math.PI*2;
+    const dist=15+Math.random()*55;
+    const sz=5+Math.random()*14;
+    const c=COLS[Math.floor(Math.random()*COLS.length)];
+    const dur=.45+Math.random()*.4;
+    const tx=Math.cos(angle)*dist,ty=Math.sin(angle)*dist;
+    const p=document.createElement('div');
+    const s=document.createElement('style');
+    const id='b'+Date.now()+i;
+    s.textContent=`@keyframes ${id}{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(.05)}}`;
+    p.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:${sz}px;height:${sz}px;border-radius:50%;background:radial-gradient(circle,${c},transparent);box-shadow:0 0 ${sz*1.5}px ${c};pointer-events:none;z-index:9999;mix-blend-mode:screen;animation:${id} ${dur}s ease-out forwards;`;
+    document.head.appendChild(s);document.body.appendChild(p);
+    setTimeout(()=>{p.remove();s.remove();},(dur+.1)*1000);
+  }
+});
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.12});
+document.querySelectorAll('.r,.rl,.rr,.rs').forEach(el=>obs.observe(el));
+
+/* SKILL SPOTLIGHT */
+document.querySelectorAll('.sk-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
+    c.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
+  });
+});
+
+/* NAV ACTIVE */
+const secs=[...document.querySelectorAll('section[id]')];
+const nas=[...document.querySelectorAll('.nav-links a')];
+window.addEventListener('scroll',()=>{
+  let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-180)cur=s.id});
+  nas.forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--violet)':''});
+},{passive:true});
+</script>
+</body>
+</html>
